@@ -13,6 +13,7 @@ void AppClass::InitVariables(void)
 	m_pPrimitive->GenerateCylinder(1.0f, 2.0f, 7, REBLUE);
 	m_pPrimitive->GenerateTube(1.0f, 0.7f, 2.0f, 7, REYELLOW);
 	m_pPrimitive->GenerateSphere(1.0f, 12, RERED);
+	m_pPrimitive->GenerateTorus(1.5f, 0.5f, 8, 10, REBLACK);
 }
 
 void AppClass::Update(void)
