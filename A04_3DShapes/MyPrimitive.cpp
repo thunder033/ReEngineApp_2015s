@@ -3,6 +3,7 @@ MyPrimitive::MyPrimitive() { }
 MyPrimitive::MyPrimitive(const MyPrimitive& other) { }
 MyPrimitive& MyPrimitive::operator=(const MyPrimitive& other) { return *this; }
 MyPrimitive::~MyPrimitive(void) { super::Release(); }
+
 void MyPrimitive::CompileObject(vector3 a_v3Color)
 {
 	m_uVertexCount = static_cast<int> (m_lVertexPos.size());
@@ -57,6 +58,21 @@ void MyPrimitive::GeneratePlane(float a_fSize, vector3 a_v3Color)
 
 	CompileObject(a_v3Color);
 }
+vector<vector3> MyPrimitive::GenerateNGon(float a_fRadius, int a_nSides, vector3 a_v3Offset)
+{
+	vector<vector3> points = vector<vector3>();
+
+	float increment = (3.14159 * 2) / a_nSides;
+	for (size_t i = 0; i < a_nSides; i++)
+	{
+		float x = a_fRadius * cos(i * increment) + a_v3Offset[0];
+		float y = a_fRadius * sin(i * increment) + a_v3Offset[1];
+		float z = a_v3Offset[2];
+		points.push_back(vector3(x, y, z));
+	}
+
+	return points;
+}
 void MyPrimitive::GenerateCube(float a_fSize, vector3 a_v3Color)
 {
 	if (a_fSize < 0.01f)
@@ -110,16 +126,21 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	vector<vector3> basePoints = GenerateNGon(a_fRadius, a_nSubdivisions, vector3(0, 0, -a_fHeight / 2));
+	vector3 vertexPoint = vector3(0, 0, a_fHeight / 2);
+	vector3 baseCenter = vector3(0, 0, -a_fHeight / 2);
 
-	AddQuad(point0, point1, point3, point2);
+	for (size_t i = 0; i < a_nSubdivisions; i++)
+	{
+		AddVertexPosition(basePoints[i]);
+		AddVertexPosition(basePoints[(i + 1) % a_nSubdivisions]);
+		AddVertexPosition(vertexPoint);
+
+		AddVertexPosition(baseCenter);
+		AddVertexPosition(basePoints[(i + 1) % a_nSubdivisions]);
+		AddVertexPosition(basePoints[i]);
+	}
+	
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -135,16 +156,27 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	vector3 base1Center = vector3(0, 0, -a_fHeight / 2);
+	vector<vector3> base1Points = GenerateNGon(a_fRadius, a_nSubdivisions, base1Center);
 
-	AddQuad(point0, point1, point3, point2);
+	vector3 base2Center = vector3(0, 0, a_fHeight / 2);
+	vector<vector3> base2Points = GenerateNGon(a_fRadius, a_nSubdivisions, base2Center);
+
+	for (size_t i = 0; i < a_nSubdivisions; i++)
+	{
+		int rightIndex = i;
+		int leftIndex = (i + 1) % a_nSubdivisions;
+
+		AddVertexPosition(base1Center);
+		AddVertexPosition(base1Points[leftIndex]);
+		AddVertexPosition(base1Points[rightIndex]);
+
+		AddQuad(base2Points[leftIndex], base2Points[rightIndex], base1Points[leftIndex], base1Points[rightIndex]);
+
+		AddVertexPosition(base2Points[rightIndex]);
+		AddVertexPosition(base2Points[leftIndex]);
+		AddVertexPosition(base2Center);
+	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -160,16 +192,25 @@ void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	vector3 base1Center = vector3(0, 0, -a_fHeight / 2);
+	vector<vector3> base1InnerPoints = GenerateNGon(a_fInnerRadius, a_nSubdivisions, base1Center);
+	vector<vector3> base1OuterPoints = GenerateNGon(a_fOuterRadius, a_nSubdivisions, base1Center);
 
-	AddQuad(point0, point1, point3, point2);
+	vector3 base2Center = vector3(0, 0, a_fHeight / 2);
+	vector<vector3> base2InnerPoints = GenerateNGon(a_fInnerRadius, a_nSubdivisions, base2Center);
+	vector<vector3> base2OuterPoints = GenerateNGon(a_fOuterRadius, a_nSubdivisions, base2Center);
+
+	for (size_t i = 0; i < a_nSubdivisions; i++)
+	{
+		int rightIndex = i;
+		int leftIndex = (i + 1) % a_nSubdivisions;
+
+		AddQuad(base2InnerPoints[rightIndex], base2InnerPoints[leftIndex], base1InnerPoints[rightIndex], base1InnerPoints[leftIndex]);
+		AddQuad(base2OuterPoints[leftIndex], base2OuterPoints[rightIndex], base1OuterPoints[leftIndex], base1OuterPoints[rightIndex]);
+
+		AddQuad(base2OuterPoints[rightIndex], base2OuterPoints[leftIndex], base2InnerPoints[rightIndex], base2InnerPoints[leftIndex]);
+		AddQuad(base1OuterPoints[leftIndex], base1OuterPoints[rightIndex], base1InnerPoints[leftIndex], base1InnerPoints[rightIndex]);
+	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -193,16 +234,35 @@ void MyPrimitive::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int 
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	//Your code starts here
+	
+	
 
-	AddQuad(point0, point1, point3, point2);
+	float ringRadius = (a_fOuterRadius - a_fInnerRadius) / 2;
+	float radIncrement = (3.1459 * 2) / (a_nSubdivisionsB);
+
+	float z = ringRadius * cos(a_nSubdivisionsB * radIncrement);
+	float xRadius = ringRadius * sin(a_nSubdivisionsB * radIncrement);
+	vector3 base1Center = vector3(0, 0, z);
+	vector<vector3> lastRingPoints = GenerateNGon(a_fInnerRadius + ringRadius + xRadius, a_nSubdivisionsA, base1Center);
+
+	for (int i = a_nSubdivisionsB - 1; i > -1; i--)
+	{
+		float z = ringRadius * cos(i * radIncrement);
+		float xRadius = ringRadius * sin(i * radIncrement);
+
+		vector<vector3> ringPoints = GenerateNGon(a_fInnerRadius + ringRadius + xRadius, a_nSubdivisionsA, vector3(0, 0, z));
+
+		for (size_t j = 0; j < a_nSubdivisionsA; j++)
+		{
+			int rightIndex = j;
+			int leftIndex = (j + 1) % a_nSubdivisionsA;
+
+			AddQuad(lastRingPoints[rightIndex], lastRingPoints[leftIndex], ringPoints[rightIndex], ringPoints[leftIndex]);
+		}
+
+		lastRingPoints = ringPoints;
+	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -215,23 +275,54 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 		GenerateCube(a_fRadius * 2, a_v3Color);
 		return;
 	}
-	if (a_nSubdivisions > 6)
-		a_nSubdivisions = 6;
+	if (a_nSubdivisions > 12)
+		a_nSubdivisions = 12;
 
 	Release();
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	vector3 base1Center = vector3(0, 0, 0);
+	vector<vector3> centerRingPoints = GenerateNGon(a_fRadius, a_nSubdivisions, base1Center);
+	vector<vector3> prevUpperRingPoints = centerRingPoints;
+	vector<vector3> prevLowerRingPoints = centerRingPoints;
 
-	AddQuad(point0, point1, point3, point2);
+	vector3 topCenter = vector3(0, 0, a_fRadius);
+	vector3 bottomCenter = vector3(0, 0, -a_fRadius);
+
+	float radIncrement = (3.1459 / 2) / (a_nSubdivisions / 2);
+	for (size_t i = a_nSubdivisions / 2; i > 0; i--)
+	{
+		float z = a_fRadius * cos(i * radIncrement);
+		float xRadius = a_fRadius * sin(i * radIncrement);
+
+		vector<vector3> upperRingPoints = GenerateNGon(xRadius, a_nSubdivisions, vector3(0, 0, z));
+		vector<vector3> lowerRingPoints = GenerateNGon(xRadius, a_nSubdivisions, vector3(0, 0, -z));
+
+		for (size_t j = 0; j < a_nSubdivisions; j++)
+		{
+			int rightIndex = j;
+			int leftIndex = (j + 1) % a_nSubdivisions;
+
+			AddQuad(prevUpperRingPoints[rightIndex], prevUpperRingPoints[leftIndex], upperRingPoints[rightIndex], upperRingPoints[leftIndex]);
+			AddQuad(prevLowerRingPoints[leftIndex], prevLowerRingPoints[rightIndex], lowerRingPoints[leftIndex], lowerRingPoints[rightIndex]);
+
+			if (i == 1) {
+				AddVertexPosition(upperRingPoints[rightIndex]);
+				AddVertexPosition(upperRingPoints[leftIndex]);
+				AddVertexPosition(topCenter);
+
+				AddVertexPosition(bottomCenter);
+				AddVertexPosition(lowerRingPoints[leftIndex]);
+				AddVertexPosition(lowerRingPoints[rightIndex]);
+				
+			}
+		}
+
+		prevUpperRingPoints = upperRingPoints;
+		prevLowerRingPoints = lowerRingPoints;
+	}
+
 
 	//Your code ends here
 	CompileObject(a_v3Color);
