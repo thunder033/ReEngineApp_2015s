@@ -4,8 +4,10 @@ Date: 2016/02
 --------------------------------------------------------------------------------------------------*/
 #ifndef __MYPRIMITIVE_H_
 #define __MYPRIMITIVE_H_
-
+#include <vector>
 #include "MyMesh.h"
+
+using namespace std;
 
 class MyPrimitive : public MyMesh
 {
@@ -42,6 +44,7 @@ public:
 	*/
 	~MyPrimitive(void);
 
+	vector<vector3> GenerateNGon(float a_fRadius, int a_nSides, vector3 a_v3Rot);
 	/* Generates a cube shape */
 	/*
 	USAGE:

@@ -7,7 +7,7 @@ void AppClass::ProcessKeyboard(void)
 #pragma region ON PRESS/RELEASE DEFINITION
 	static bool	bLastF1 = false, bLastF2 = false, bLastF3 = false, bLastF4 = false, bLastF5 = false,
 				bLastF6 = false, bLastF7 = false, bLastF8 = false, bLastF9 = false, bLastF10 = false,
-				bLastEscape = false, bLastF = false;
+				bLastT = false, bLastEscape = false, bLastF = false;
 #define ON_KEY_PRESS_RELEASE(key, pressed_action, released_action){  \
 			bool pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::key);			\
 			if(pressed){											\
@@ -53,8 +53,9 @@ void AppClass::ProcessKeyboard(void)
 	ON_KEY_PRESS_RELEASE(F5, NULL, m_pPrimitive->GenerateCone(1.0f, 1.0f, 12, REGREEN));
 	ON_KEY_PRESS_RELEASE(F6, NULL, m_pPrimitive->GenerateCylinder(1.0f, 2.0f, 7, REBLUE));
 	ON_KEY_PRESS_RELEASE(F7, NULL, m_pPrimitive->GenerateTube(1.0f, 0.7f, 2.0f, 7, REYELLOW));
-	ON_KEY_PRESS_RELEASE(F8, NULL, m_pPrimitive->GenerateSphere(1.0f, 3, RERED));
+	ON_KEY_PRESS_RELEASE(F8, NULL, m_pPrimitive->GenerateSphere(1.0f, 12, RERED));
 	ON_KEY_PRESS_RELEASE(F9, NULL, m_pPrimitive->GenerateCube(1.0f, REWHITE));
+	ON_KEY_PRESS_RELEASE(T, NULL, m_pPrimitive->GenerateTorus(1.5f, 0.5f, 8, 10, REBLACK));
 
 	static bool bFPSControll = false;
 	ON_KEY_PRESS_RELEASE(F, bFPSControll = !bFPSControll, m_pCameraMngr->SetFPS(bFPSControll));
