@@ -5,6 +5,18 @@ void AppClass::InitWindow(String a_sWindowName)
 	m_v4ClearColor = vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
+matrix4 translate(matrix4 mat, vector4 vec) {
+	mat[3] = vec;
+	return mat;
+}
+
+matrix4 scale(matrix4 mat, float scalar) {
+	mat[0, 0] *= scalar;
+	mat[1, 1] *= scalar;
+	mat[2, 2] *= scalar;
+	return mat;
+}
+
 void AppClass::InitVariables(void)
 {
 	//Sets the camera
@@ -19,15 +31,19 @@ void AppClass::InitVariables(void)
 
 	//Initializing the primitives
 	m_pSphere->GenerateSphere(0.5f, 5, REWHITE);
+
+	//m_m4Sphere = IDENTITY_M4;
+	m_m4Sphere = glm::translate(IDENTITY_M4, vector3(1, 2, 0));
+	m_m4Sphere = glm::scale(m_m4Sphere, vector3(2, 2, 2));
 }
 
 void AppClass::Update(void)
 {
 	//This matrices will just place the objects int the right spots
-	m_m4Sphere = glm::translate(IDENTITY_M4, vector3(2.5f, 2.5f, 0.0f));
+	//m_m4Sphere = glm::translate(IDENTITY_M4, vector3(2.5f, 2.5f, 0.0f));
 
 	//This matrices will scale them to the right size
-	m_m4Sphere = glm::scale(m_m4Sphere, vector3(2.0f, 2.0f, 2.0f));
+	//m_m4Sphere = glm::scale(m_m4Sphere, vector3(2.0f, 2.0f, 2.0f));
 
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
