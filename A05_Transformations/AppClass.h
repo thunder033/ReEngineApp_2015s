@@ -20,8 +20,9 @@ class AppClass : public ReEngAppClass
 	matrix4 m_m4Earth;// Matrix for the Earth
 	matrix4 m_m4Moon;// Matrix for the Moon
 
-	float m_fEarthTimer = 0; //Will count the cycles we are RE_RUNNING
-	float m_fMoonTimer = 0; //Will count the cycles the moon is RE_RUNNING
+	float m_fTimeElapsed = 0; //Will count the cycles we are RE_RUNNING
+	float m_fFrames = 0; //Will count the cycles the moon is RE_RUNNING
+	float m_fSimulationSpeed = 40.0f; //how fast to run the simulation
 
 public:
 	typedef ReEngAppClass super;
