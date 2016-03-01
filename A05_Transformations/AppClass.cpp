@@ -49,30 +49,57 @@ void AppClass::Update(void)
 #pragma endregion
 
 #pragma region YOUR CODE GOES HERE
+	
+	/*
+	I know celestial accuracy wasn't really the point but this was much easier for me to understand with things more accurate
+	The solar rotation and earth axial tilt are extra but they were easy to add once I figured everything out
+	*/
+
+	float daysInYear = 365.25f;
+	float daysPerLunarYear = 27.0f; //also the same as one lunar rotation/day
+	float daysPerSolarRotation = 24.47f;
+	float earthAxialTilt = 23.4;
+
+	vector3 vXUnit = vector3(1, 0, 0);
+	vector3 vYUnit = vector3(0, 1, 0);
+	vector3 vZUnit = vector3(0, 0, 1);
+
 	//Calculate the position of the Earth
-	m_m4Earth = glm::rotate(IDENTITY_M4, m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Sun = glm::translate(IDENTITY_M4, glm::vec3(m_m4Sun[3])); //persist the sun's posisition only
+	m_m4Earth = m_m4Sun; //move the earth back to the sun
+	m_m4Earth = glm::rotate(m_m4Earth, m_fTimeElapsed, vYUnit); //rotate the earth based on orbit position
+	m_m4Earth *= distanceEarth; //translate to orbit position
+
+	m_m4Sun *= glm::rotate(IDENTITY_M4, m_fTimeElapsed * (daysInYear / daysPerSolarRotation), vYUnit); //apply rotation to sun
 
 	//Calculate the position of the Moon
-	m_m4Moon = glm::rotate(IDENTITY_M4, m_fMoonTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Moon = glm::rotate(m_m4Earth, m_fTimeElapsed * (daysInYear/daysPerLunarYear), vYUnit); //move moon to earth and apply orbital rotation
+	m_m4Moon *= distanceMoon * rotateX * glm::rotate(IDENTITY_M4, 90.0f, vZUnit); //translate moon out to its orbit, tidally lock it to the earth
+
+	m_m4Earth *= glm::rotate(IDENTITY_M4, -m_fTimeElapsed, vYUnit) //negate orbital Y rotation of the earth because it's axial tilt isn't tidally locked to sun
+		* glm::rotate(IDENTITY_M4, 90.0f - earthAxialTilt, vXUnit)  //apply axial tilt to the earth
+		* glm::rotate(IDENTITY_M4, -m_fTimeElapsed * daysInYear, vZUnit); //rotate for day/night cycle
+
 #pragma endregion
 
 #pragma region Print info
-	printf("Earth Day: %.3f, Moon Day: %.3f\r", m_fEarthTimer, m_fMoonTimer);//print the Frames per Second
+	printf("Earth Day: %.3f, Moon Day: %.3f\r", m_fTimeElapsed, m_fFrames);//print the Frames per Second
 	
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
 	//Print info on the screen
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
 	m_pMeshMngr->Print("Earth Day: ", REWHITE);
-	m_pMeshMngr->PrintLine(std::to_string(m_fEarthTimer), REBLUE);
-	m_pMeshMngr->Print("Moon Day: ", REWHITE);
-	m_pMeshMngr->PrintLine(std::to_string(m_fMoonTimer), REBLUE);
+	m_pMeshMngr->PrintLine(std::to_string((m_fTimeElapsed * daysInYear)/360.0f), REBLUE);
+	m_pMeshMngr->Print("Lunar Year: ", REWHITE);
+	m_pMeshMngr->PrintLine(std::to_string((m_fTimeElapsed * (daysInYear / daysPerLunarYear))/360.0f), REBLUE);
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
 #pragma endregion
 
-	m_fMoonTimer++;//Increase Moon timer
-	m_fEarthTimer = m_fMoonTimer / 28.0f; //divide by the moon's day
+	//renamed from earth/moon timers
+	m_fFrames++;
+	m_fTimeElapsed = m_fFrames / m_fSimulationSpeed;
 }
 
 void AppClass::Display(void)
