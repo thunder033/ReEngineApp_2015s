@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{03A1F7D3-EEB8-409D-8D57-54658396A6B1}</ProjectGuid>
-    <RootNamespace>Example</RootNamespace>
-    <ProjectName>Example</ProjectName>
+    <RootNamespace>E06_Lerp</RootNamespace>
+    <ProjectName>E06_Lerp</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
