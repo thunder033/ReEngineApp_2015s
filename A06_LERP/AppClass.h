@@ -15,6 +15,10 @@ class AppClass : public ReEngAppClass
 	float fDuration = 1.0f; //Time Duration of the stops
 public:
 	typedef ReEngAppClass super;
+
+	int m_nObjects;
+	PrimitiveClass* m_pSphere = nullptr;
+	matrix4* m_pMatrix;
 	/*
 	USAGE: Constructor
 	ARGUMENTS:

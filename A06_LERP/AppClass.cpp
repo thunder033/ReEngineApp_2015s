@@ -6,7 +6,7 @@ void AppClass::InitWindow(String a_sWindowName)
 
 void AppClass::InitVariables(void)
 {
-	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 0.0f, 15.0f), ZERO_V3, REAXISY);
+	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 0.0f, 35.0f), ZERO_V3, REAXISY);
 
 	// Color of the screen
 	m_v4ClearColor = vector4(REBLACK, 1); // Set the clear color to black
@@ -14,6 +14,23 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->LoadModel("Sorted\\WallEye.bto", "WallEye");
 
 	fDuration = 1.0f;
+
+	srand(time(NULL));
+	m_nObjects = rand() % 23 + 5;
+
+	vector3 v3Start = vector3(-m_nObjects, 0.0f, 0.0f);
+	vector3 v3End = vector3(m_nObjects, 0.0f, 0.0f);
+
+	m_pMatrix = new glm::mat4[m_nObjects];
+	m_pSphere = new PrimitiveClass[m_nObjects];
+
+	for (size_t i = 0; i < m_nObjects; i++)
+	{
+		float fPercent = MapValue(static_cast<float>(i), 0.0f, static_cast<float>(m_nObjects), 0.0f, 1.0f);
+		m_pSphere[i] = PrimitiveClass();
+		m_pSphere[i].GenerateSphere(1, 12, vector3(fPercent, 0, 0));
+		m_pMatrix[i] *= glm::translate(IDENTITY_M4, (fPercent * 2 * m_nObjects) - m_nObjects, 0.0f, 0.0f);
+	}
 }
 
 void AppClass::Update(void)
@@ -74,6 +91,11 @@ void AppClass::Display(void)
 		m_pMeshMngr->AddGridToQueue(1.0f, REAXIS::XY, REBLUE * 0.75f); //renders the XY grid with a 100% scale
 		break;
 	}
+
+	for (size_t i = 0; i < m_nObjects; i++)
+	{
+		m_pSphere[i].Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), m_pMatrix[i]);
+	}
 	
 	m_pMeshMngr->Render(); //renders the render list
 
@@ -82,5 +104,8 @@ void AppClass::Display(void)
 
 void AppClass::Release(void)
 {
+	delete[] m_pSphere;
+	delete[] m_pMatrix;
+
 	super::Release(); //release the memory of the inherited fields
 }
