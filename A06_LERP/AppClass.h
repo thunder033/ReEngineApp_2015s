@@ -9,10 +9,16 @@ Date: 2015/09
 #include <SFML\Graphics.hpp>
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
+using namespace std;
 
 class AppClass : public ReEngAppClass
 {
-	float fDuration = 1.0f; //Time Duration of the stops
+	float fSpeed = 1.0f; //Time Duration of the stops
+	int nTarget = 0;
+	int nLastTarget;
+	float fDistTraveled = 0;
+	float fTargetDist = 0;
+	vector3* m_path;
 public:
 	typedef ReEngAppClass super;
 
