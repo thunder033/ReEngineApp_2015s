@@ -47,29 +47,6 @@ void AppClass::ProcessKeyboard(void)
 #pragma endregion
 
 #pragma region Model Positioning
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		m_v3Position += vector3(-0.1f, 0.0f, 0.0f);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		m_v3Position += vector3( 0.1f, 0.0f, 0.0f);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		if(!bModifier)
-			m_v3Position += vector3( 0.0f, 0.1f, 0.0f);
-		else
-			m_v3Position += vector3( 0.0f, 0.0f,-0.1f);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		if (!bModifier)
-			m_v3Position += vector3( 0.0f,-0.1f, 0.0f);
-		else
-			m_v3Position += vector3( 0.0f, 0.0f, 0.1f);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-		if (!bModifier)
-			m_fRotX += alt ? 18 : 3;
-		else
-			m_fRotX -= alt ? 18 : 3;
 
 #pragma endregion
 
