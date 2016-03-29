@@ -2,10 +2,9 @@
 void AppClass::ProcessKeyboard(void)
 {
 	bool bModifier = false;
-	bool alt = false;
 	float fSpeed = 0.01f;
 
-#pragma region ON_KEY_PRESS_RELEASE
+#pragma region ON PRESS/RELEASE DEFINITION
 	static bool	bLastF1 = false, bLastF2 = false, bLastF3 = false, bLastF4 = false, bLastF5 = false,
 				bLastF6 = false, bLastF7 = false, bLastF8 = false, bLastF9 = false, bLastF10 = false,
 				bLastEscape = false, bLastF = false;
@@ -20,8 +19,6 @@ void AppClass::ProcessKeyboard(void)
 #pragma region Modifiers
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
 		bModifier = true;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) || sf::Keyboard::isKeyPressed(sf::Keyboard::RAlt))
-		alt = true;
 #pragma endregion
 
 #pragma region Camera Positioning
@@ -44,10 +41,6 @@ void AppClass::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(fSpeed);
-#pragma endregion
-
-#pragma region Model Positioning
-
 #pragma endregion
 
 #pragma region Other Actions
@@ -73,29 +66,7 @@ void AppClass::ProcessMouse(void)
 			else if(bLast##key) released_action;/*Just released?*/\
 			bLast##key = pressed; } //remember the state
 #pragma endregion
-	bool bLeft = false;
-	ON_MOUSE_PRESS_RELEASE(Left, NULL, bLeft = true)
-	if (bLeft)
-	{
-		//Turn off the visibility of all BOs for all instances
-		m_pMeshMngr->SetVisibleBO(BD_NONE, "ALL", -1);
-		//Get the Position and direction of the click on the screen
-		std::pair<vector3, vector3> pair =
-			m_pCameraMngr->GetClickAndDirectionOnWorldSpace(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
-		float fDistance = 0;//Stores the distance to the first colliding object
-		m_selection = m_pMeshMngr->IsColliding(pair.first, pair.second, fDistance);
 
-		//If there is a collision
-		if (m_selection.first >= 0)
-		{
-			//Turn on the BO of the group
-			m_pMeshMngr->SetVisibleBO(BD_OB, m_selection.first, m_selection.second);
-
-			//Turn of the BO of the instance but not the group
-			m_pMeshMngr->SetVisibleBO(BD_NONE, m_selection.first, -2);
-		}
-	}
-	
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle))
 		m_bArcBall = true;
 	

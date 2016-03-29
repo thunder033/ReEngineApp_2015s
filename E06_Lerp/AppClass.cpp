@@ -11,13 +11,25 @@ void AppClass::InitWindow(String a_sWindowName)
 
 void AppClass::InitVariables(void)
 {
-	//Set the camera at a position other than the default
-	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 2.5f, 12.0f), vector3(0.0f, 2.5f, 11.0f), REAXISY);
 
-	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
-	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve0");
-	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve1");
-	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve2");
+	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 0.0f, 35.0f), ZERO_V3, REAXISY);
+
+	srand(time(NULL));
+	m_nObjects = rand() % 23 + 5;
+
+	vector3 v3Start = vector3(-m_nObjects, 0.0f, 0.0f);
+	vector3 v3End = vector3(m_nObjects, 0.0f, 0.0f);
+
+	m_pMatrix = new glm::mat4[m_nObjects];
+	m_pSphere = new PrimitiveClass[m_nObjects];
+
+	for (size_t i = 0; i < m_nObjects; i++)
+	{
+		float fPercent = MapValue(static_cast<float>(i), 0.0f, static_cast<float>(m_nObjects), 0.0f, 1.0f);
+		m_pSphere[i] = PrimitiveClass();
+		m_pSphere[i].GenerateSphere(1, 12, vector3(fPercent, 0, 0));
+		m_pMatrix[i] *= glm::translate(IDENTITY_M4, (fPercent * 2 * m_nObjects) - m_nObjects, 0.0f, 0.0f);
+	}
 }
 
 void AppClass::Update(void)
@@ -34,17 +46,7 @@ void AppClass::Update(void)
 
 	//Call the arcball method
 	ArcBall();
-	matrix4 m4Temp = IDENTITY_M4;
-	float deg = sin(m_fRotX * 2) * 90;
-	m4Temp = m4Temp * glm::translate(m_v3Position) * glm::rotate(deg, 1.0f, 1.0f, 1.0f);
 
-	matrix4 m4Temp2 = IDENTITY_M4 * glm::translate(-m_v3Position) * glm::rotate(-deg, 1.0f, 1.0f, 1.0f);
-
-	m_pMeshMngr->SetModelMatrix(m4Temp, "Steve");
-	m_pMeshMngr->SetModelMatrix(m4Temp2, "Steve0");
-	m_pMeshMngr->SetModelMatrix(m4Temp * glm::translate(-1.0f * m_v3Position), "Steve1");
-	m_pMeshMngr->SetModelMatrix(m4Temp2 * glm::translate(-1.0f * m_v3Position), "Steve2");
-	
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
@@ -82,6 +84,11 @@ void AppClass::Display(void)
 	case CAMERAMODE::CAMROTHOZ:
 		m_pMeshMngr->AddGridToQueue(1.0f, REAXIS::XY, REBLUE * 0.75f); //renders the XY grid with a 100% scale
 		break;
+	}
+
+	for (size_t i = 0; i < m_nObjects; i++)
+	{
+		m_pSphere[i].Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), m_pMatrix[i]);
 	}
 	
 	m_pMeshMngr->Render(); //renders the render list
