@@ -21,6 +21,21 @@ void AppClass::ProcessKeyboard(void)
 		bModifier = true;
 #pragma endregion
 
+#pragma region Move Sun
+
+	float sunSpeed = bModifier ? -.05f : .05f;
+	m_m4Sun = glm::translate(IDENTITY_M4, glm::vec3(m_m4Sun[3]));
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+		m_m4Sun *= glm::translate(IDENTITY_M4, vector3(sunSpeed, 0, 0));
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+		m_m4Sun *= glm::translate(IDENTITY_M4, vector3(0, sunSpeed, 0));
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+		m_m4Sun *= glm::translate(IDENTITY_M4, vector3(0, 0, sunSpeed));
+
+#pragma endregion
+
 #pragma region Camera Positioning
 	if(bModifier)
 		fSpeed *= 10.0f;
@@ -41,6 +56,12 @@ void AppClass::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(fSpeed);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+		m_fDay *= 1.01f;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Dash))
+		m_fDay = m_fDay / 1.01f;
 #pragma endregion
 
 #pragma region Other Actions
