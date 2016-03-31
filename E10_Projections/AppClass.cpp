@@ -7,15 +7,17 @@ void AppClass::InitVariables(void)
 {
 	//Generate the Cone
 	m_pCone = new PrimitiveClass();
-	m_pCone->GenerateCone(1.0f, 1.0f, 10, RERED);
+	m_pCone->GenerateCone(1.0f, 2.0f, 10, RERED);
 
 	//Generate the Cylinder
 	m_pCylinder = new PrimitiveClass();
-	m_pCylinder->GenerateCylinder(1.0f, 1.0f, 10, REGREEN);
+	m_pCylinder->GenerateCylinder(1.0f, 2.0f, 10, REGREEN);
 
 	//Calculate the first projections
 	m_m4Projection = glm::perspective(45.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
 	m_m4View = glm::lookAt(glm::vec3(0.0f, 0.0f, 15.0f), glm::vec3(0.0f, 0.0f, 14.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	cameraPos = vector3(0.0f, 0.0f, 15.0f);
 }
 
 void AppClass::Update(void)
@@ -28,6 +30,28 @@ void AppClass::Update(void)
 
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
+
+	
+	m_m4Projection = glm::ortho(
+		-10.0f,	//left
+		10.0f,	//right
+		-10.f,	//bottom
+		10.0f,	//top
+		0.01f,	//near
+		1000.0f	//far
+		);
+
+	//Calculate the first projections
+	m_m4Projection = glm::perspective(
+		45.0f, //veiwing angle
+		1080.0f / 768.0f, //aspect ratio
+		0.01f, //near
+		1000.0f); //far
+
+	m_m4View = glm::lookAt(
+		cameraPos, //position of camera
+		glm::vec3(0.0f, 0.0f, 0.0f), //what camera is looking at
+		glm::vec3(0.0f, 1.0f, 0.0f)); //up
 }
 
 void AppClass::Display(void)

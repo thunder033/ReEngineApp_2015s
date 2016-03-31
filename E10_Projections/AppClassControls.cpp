@@ -44,6 +44,31 @@ void AppClass::ProcessKeyboard(void)
 	{
 	}
 
+#pragma region Camera Control
+
+	float speed = 0.1f;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		cameraPos.x -= speed;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		cameraPos.x += speed;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		cameraPos.z += speed;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		cameraPos.z -= speed;
+	}
+
+#pragma endregion
+
 	//Exit the program
 #pragma region Other Actions
 	ON_KEY_PRESS_RELEASE(Escape, NULL, PostMessage(m_pWindow->GetHandler(), WM_QUIT, NULL, NULL))

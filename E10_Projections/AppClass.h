@@ -16,6 +16,7 @@ class AppClass : public ReEngAppClass
 	PrimitiveClass* m_pCone = nullptr;
 	PrimitiveClass* m_pCylinder = nullptr;
 
+	vector3 cameraPos;
 	matrix4 m_m4Projection;
 	matrix4 m_m4View;
 public:
