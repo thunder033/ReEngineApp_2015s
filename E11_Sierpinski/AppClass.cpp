@@ -25,7 +25,7 @@ void AppClass::InitVariables(void)
 	m_pMesh->AddVertexPosition(vector3( 1.0f, 1.0f, 0.0f));
 	m_pMesh->AddVertexColor(REBLUE);
 
-	int* points = new int[] {
+	int* points = new int[81] {
 		1,
 		1, 2, 1,
 		1, 3, 3, 1,

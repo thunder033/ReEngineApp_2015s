@@ -9,6 +9,30 @@ void AppClass::InitWindow(String a_sWindowName)
 	m_v4ClearColor = vector4(0.4f, 0.6f, 0.9f, 0.0f);
 }
 
+void getMinMax(vector3& min, vector3& max, std::vector<vector3> points) {
+	min = points[0];
+	max = points[0];
+
+	std::vector<vector3>::iterator it;
+	for (it = points.begin(); it != points.end(); ++it)
+	{
+		if (it->x < min.x)
+			min.x = it->x;
+		else if (it->x > max.x)
+			max.x = it->x;
+
+		if (it->y < min.y)
+			min.y = it->y;
+		else if (it->y > max.y)
+			max.y = it->y;
+
+		if (it->z < min.z)
+			min.z = it->z;
+		else if (it->z > max.z)
+			max.z = it->z;
+	}
+}
+
 void AppClass::InitVariables(void)
 {
 	//Initialize positions
@@ -18,6 +42,25 @@ void AppClass::InitVariables(void)
 	//Load Models
 	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
 	m_pMeshMngr->LoadModel("Minecraft\\Creeper.obj", "Creeper");
+
+	std::vector<vector3> points = m_pMeshMngr->GetVertexList("Steve");
+	vector3 min, max;
+
+	getMinMax(min, max, points);
+	steveCenter = (min + max) / 2.0f;
+	steveRadius = glm::distance(steveCenter, max);
+
+	m_pSphere1 = new PrimitiveClass();
+	m_pSphere1->GenerateSphere(steveRadius, 12, REGREEN);
+
+	points = m_pMeshMngr->GetVertexList("Creeper");
+	getMinMax(min, max, points);
+	creeperCenter = (min + max) / 2.0f;
+	creeperRadius = glm::distance(creeperCenter, max);
+
+	m_pSphere2 = new PrimitiveClass();
+	m_pSphere2->GenerateSphere(creeperRadius, 12, REGREEN);
+
 }
 
 void AppClass::Update(void)
@@ -43,12 +86,20 @@ void AppClass::Update(void)
 
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
+
+	float dist = glm::distance(steveCenter, creeperCenter);
+	bool areColliding = dist < steveRadius + creeperRadius;
+
 	//print info into the console
 	printf("FPS: %d            \r", nFPS);//print the Frames per Second
 	//Print info on the screen
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
+
+	if (areColliding) {
+		m_pMeshMngr->PrintLine("Colliding!");
+	}
 }
 
 void AppClass::Display(void)
@@ -72,6 +123,15 @@ void AppClass::Display(void)
 		m_pMeshMngr->AddGridToQueue(1.0f, REAXIS::XY, REBLUE * 0.75f); //renders the XY grid with a 100% scale
 		break;
 	}
+
+	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
+	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
+
+	matrix4 m4Model = m_pMeshMngr->GetModelMatrix("Steve") * glm::translate(steveCenter);
+	m_pSphere1->Render(m4Projection,m4View, m4Model);
+
+	m4Model = m_pMeshMngr->GetModelMatrix("Creeper") * glm::translate(creeperCenter);
+	m_pSphere2->Render(m4Projection, m4View, m4Model);
 	
 	m_pMeshMngr->Render(); //renders the render list
 
@@ -81,4 +141,10 @@ void AppClass::Display(void)
 void AppClass::Release(void)
 {
 	super::Release(); //release the memory of the inherited fields
+
+	if (m_pSphere1 != nullptr)
+	{
+		delete m_pSphere1;
+		m_pSphere1 = nullptr;
+	}
 }
