@@ -19,10 +19,12 @@ class AppClass : public ReEngAppClass
 	PrimitiveClass* m_pSphere1;
 	vector3 steveCenter;
 	float steveRadius;
+	matrix4 m4Steve;
 
 	PrimitiveClass* m_pSphere2;
 	vector3 creeperCenter;
 	float creeperRadius;
+	matrix4 m4Creeper;
 public:
 	typedef ReEngAppClass super;
 	/*

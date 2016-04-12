@@ -50,16 +50,10 @@ void AppClass::InitVariables(void)
 	steveCenter = (min + max) / 2.0f;
 	steveRadius = glm::distance(steveCenter, max);
 
-	m_pSphere1 = new PrimitiveClass();
-	m_pSphere1->GenerateSphere(steveRadius, 12, REGREEN);
-
 	points = m_pMeshMngr->GetVertexList("Creeper");
 	getMinMax(min, max, points);
 	creeperCenter = (min + max) / 2.0f;
 	creeperRadius = glm::distance(creeperCenter, max);
-
-	m_pSphere2 = new PrimitiveClass();
-	m_pSphere2->GenerateSphere(creeperRadius, 12, REGREEN);
 
 }
 
@@ -81,14 +75,29 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall), "Steve");
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O2), "Creeper");
 
+	vector3 v3SteveGlob = vector3(m4Steve * vector4(steveCenter, 1.0f));
+	vector3 v3CreeperGlob = vector3(m4Creeper * vector4(creeperCenter, 1.0f));
+
+	float dist = glm::distance(v3SteveGlob, v3CreeperGlob);
+	bool areColliding = dist < (steveRadius + creeperRadius);
+
+	m_pMeshMngr->Print("x: " + std::to_string(v3SteveGlob.x) + " ", RERED);
+	m_pMeshMngr->Print("y: " + std::to_string(v3SteveGlob.y) + " ", RERED);
+	m_pMeshMngr->Print("z: " + std::to_string(v3SteveGlob.z) + " ", RERED);
+	m_pMeshMngr->PrintLine("");
+
+	vector3 color = areColliding ? RERED : REGREEN;
+	m4Steve = m_pMeshMngr->GetModelMatrix("Steve") * glm::translate(steveCenter);
+	m_pMeshMngr->AddSphereToQueue(m4Steve * glm::scale(vector3(steveRadius * 2.0f)), color, WIRE);
+
+	m4Creeper = m_pMeshMngr->GetModelMatrix("Creeper") * glm::translate(creeperCenter);
+	m_pMeshMngr->AddSphereToQueue(m4Creeper * glm::scale(vector3(creeperRadius * 2.0f)), color, WIRE);
+
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
-
-	float dist = glm::distance(steveCenter, creeperCenter);
-	bool areColliding = dist < steveRadius + creeperRadius;
 
 	//print info into the console
 	printf("FPS: %d            \r", nFPS);//print the Frames per Second
@@ -96,10 +105,7 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
-
-	if (areColliding) {
-		m_pMeshMngr->PrintLine("Colliding!");
-	}
+	m_pMeshMngr->PrintLine("");
 }
 
 void AppClass::Display(void)
@@ -124,14 +130,16 @@ void AppClass::Display(void)
 		break;
 	}
 
-	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
-	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
+	//matrix4 m4View = m_pCameraMngr->GetViewMatrix();
+	//matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
 
-	matrix4 m4Model = m_pMeshMngr->GetModelMatrix("Steve") * glm::translate(steveCenter);
-	m_pSphere1->Render(m4Projection,m4View, m4Model);
+	//matrix4 m4Model = m_pMeshMngr->GetModelMatrix("Steve") * glm::translate(steveCenter) * glm::scale(vector3(steveRadius * 2.0f));
+	////m_pSphere1->Render(m4Projection,m4View, m4Model);
+	//m_pMeshMngr->AddSphereToQueue(m4Model, RERED, WIRE);
 
-	m4Model = m_pMeshMngr->GetModelMatrix("Creeper") * glm::translate(creeperCenter);
-	m_pSphere2->Render(m4Projection, m4View, m4Model);
+	//m4Model = m_pMeshMngr->GetModelMatrix("Creeper") * glm::translate(creeperCenter)* glm::scale(vector3(creeperRadius * 2.0f));
+	////m_pSphere2->Render(m4Projection, m4View, m4Model);
+	//m_pMeshMngr->AddSphereToQueue(m4Model, RERED, WIRE);
 	
 	m_pMeshMngr->Render(); //renders the render list
 
