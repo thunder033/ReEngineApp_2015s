@@ -26,6 +26,13 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
+private:
+
+	float* m_fMatrixArray;
+	int m_iObjects;
+	const int m_iMatrixSize = 16;
+	void AddTransformToRenderList(matrix4 transform);
+
 public:
 	typedef ReEngAppClass super;
 

@@ -1,4 +1,10 @@
 #include "AppClass.h"
+void AppClass::AddTransformToRenderList(matrix4 transform)
+{
+	const float* m4MVP = glm::value_ptr(transform);
+	memcpy(&m_fMatrixArray[m_iObjects++ * m_iMatrixSize], m4MVP, m_iMatrixSize * sizeof(float));
+}
+
 void AppClass::InitWindow(String a_sWindowName)
 {
 	//Using Base InitWindow method
@@ -41,6 +47,10 @@ void AppClass::InitVariables(void)
 
 	};
 
+	int rows = 5;
+	//The number of triangles drawn for a S. Traingle of a given size is (at most) the number of rows squared
+	m_fMatrixArray = new float[pow(rows, 2) * m_iMatrixSize];
+
 	//Compiling the mesh
 	m_pMesh->CompileOpenGL3X();
 }
@@ -74,7 +84,7 @@ void AppClass::Update(void)
 void AppClass::Display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
-	
+
 	//Matrices from the camera
 	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
 	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
