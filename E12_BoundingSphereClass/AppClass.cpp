@@ -9,30 +9,6 @@ void AppClass::InitWindow(String a_sWindowName)
 	m_v4ClearColor = vector4(0.4f, 0.6f, 0.9f, 0.0f);
 }
 
-void getMinMax(vector3& min, vector3& max, std::vector<vector3> points) {
-	min = points[0];
-	max = points[0];
-
-	std::vector<vector3>::iterator it;
-	for (it = points.begin(); it != points.end(); ++it)
-	{
-		if (it->x < min.x)
-			min.x = it->x;
-		else if (it->x > max.x)
-			max.x = it->x;
-
-		if (it->y < min.y)
-			min.y = it->y;
-		else if (it->y > max.y)
-			max.y = it->y;
-
-		if (it->z < min.z)
-			min.z = it->z;
-		else if (it->z > max.z)
-			max.z = it->z;
-	}
-}
-
 void AppClass::InitVariables(void)
 {
 	//Initialize positions
@@ -43,17 +19,8 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
 	m_pMeshMngr->LoadModel("Minecraft\\Creeper.obj", "Creeper");
 
-	std::vector<vector3> points = m_pMeshMngr->GetVertexList("Steve");
-	vector3 min, max;
-
-	getMinMax(min, max, points);
-	steveCenter = (min + max) / 2.0f;
-	steveRadius = glm::distance(steveCenter, max);
-
-	points = m_pMeshMngr->GetVertexList("Creeper");
-	getMinMax(min, max, points);
-	creeperCenter = (min + max) / 2.0f;
-	creeperRadius = glm::distance(creeperCenter, max);
+	m_pColSteve = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Steve"));
+	m_pColCreeper = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Creeper"));
 
 }
 
@@ -75,23 +42,31 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall), "Steve");
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O2), "Creeper");
 
-	vector3 v3SteveGlob = vector3(m4Steve * vector4(steveCenter, 1.0f));
-	vector3 v3CreeperGlob = vector3(m4Creeper * vector4(creeperCenter, 1.0f));
+	//m_pMeshMngr->Print("x: " + std::to_string(v3SteveGlob.x) + " ", RERED);
+	//m_pMeshMngr->Print("y: " + std::to_string(v3SteveGlob.y) + " ", RERED);
+	//m_pMeshMngr->Print("z: " + std::to_string(v3SteveGlob.z) + " ", RERED);
+	//m_pMeshMngr->PrintLine("");
 
-	float dist = glm::distance(v3SteveGlob, v3CreeperGlob);
-	bool areColliding = dist < (steveRadius + creeperRadius);
+	std::cout << m_pColSteve->GetRadius() << std::endl;
+	std::cout << m_pColCreeper->GetRadius() << std::endl;
 
-	m_pMeshMngr->Print("x: " + std::to_string(v3SteveGlob.x) + " ", RERED);
-	m_pMeshMngr->Print("y: " + std::to_string(v3SteveGlob.y) + " ", RERED);
-	m_pMeshMngr->Print("z: " + std::to_string(v3SteveGlob.z) + " ", RERED);
-	m_pMeshMngr->PrintLine("");
+	m_pColSteve->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
+	m_pColCreeper->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
 
-	vector3 color = areColliding ? RERED : REGREEN;
-	m4Steve = m_pMeshMngr->GetModelMatrix("Steve") * glm::translate(steveCenter);
-	m_pMeshMngr->AddSphereToQueue(m4Steve * glm::scale(vector3(steveRadius * 2.0f)), color, WIRE);
+	vector3 color = m_pColSteve->IsColliding(m_pColCreeper) ? RERED : REGREEN;
 
-	m4Creeper = m_pMeshMngr->GetModelMatrix("Creeper") * glm::translate(creeperCenter);
-	m_pMeshMngr->AddSphereToQueue(m4Creeper * glm::scale(vector3(creeperRadius * 2.0f)), color, WIRE);
+	//m4Steve = m_pMeshMngr->GetModelMatrix("Steve") * glm::translate(steveCenter);
+	//m_pMeshMngr->AddSphereToQueue(m4Steve * glm::scale(vector3(steveRadius * 2.0f)), color, WIRE);
+
+	//m4Creeper = m_pMeshMngr->GetModelMatrix("Creeper") * glm::translate(creeperCenter);
+	//m_pMeshMngr->AddSphereToQueue(m4Creeper * glm::scale(vector3(creeperRadius * 2.0f)), color, WIRE);
+
+	m_pMeshMngr->AddSphereToQueue(
+		glm::translate(m_pColSteve->GetCenter()) * glm::scale(vector3(m_pColSteve->GetRadius() * 2.0f)), 
+		color, WIRE);
+	m_pMeshMngr->AddSphereToQueue(
+		glm::translate(m_pColCreeper->GetCenter()) * glm::scale(vector3(m_pColCreeper->GetRadius() * 2.0f)),
+		color, WIRE);
 
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");

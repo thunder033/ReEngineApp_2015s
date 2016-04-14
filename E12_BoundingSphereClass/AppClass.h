@@ -25,6 +25,9 @@ class AppClass : public ReEngAppClass
 	vector3 creeperCenter;
 	float creeperRadius;
 	matrix4 m4Creeper;
+
+	MyBoundingSphereClass* m_pColSteve;
+	MyBoundingSphereClass* m_pColCreeper;
 public:
 	typedef ReEngAppClass super;
 	/*

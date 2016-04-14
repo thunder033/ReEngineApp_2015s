@@ -22,9 +22,37 @@ void MyBoundingSphereClass::Release(void)
 {
 
 }
+
+void MyBoundingSphereClass::GetMinMax(vector3& min, vector3& max, std::vector<vector3> points) {
+	min = points[0];
+	max = points[0];
+
+	std::vector<vector3>::iterator it;
+	for (it = points.begin(); it != points.end(); ++it)
+	{
+		if (it->x < min.x)
+			min.x = it->x;
+		else if (it->x > max.x)
+			max.x = it->x;
+
+		if (it->y < min.y)
+			min.y = it->y;
+		else if (it->y > max.y)
+			max.y = it->y;
+
+		if (it->z < min.z)
+			min.z = it->z;
+		else if (it->z > max.z)
+			max.z = it->z;
+	}
+}
+
 //The big 3
 MyBoundingSphereClass::MyBoundingSphereClass(std::vector<vector3> a_lVectorList)
 {
+	GetMinMax(m_v3Min, m_v3Max, a_lVectorList);
+	m_v3Center = (m_v3Min + m_v3Max) / 2.0f;
+	m_fRadius = glm::distance(m_v3Center, m_v3Max);
 }
 MyBoundingSphereClass::MyBoundingSphereClass(MyBoundingSphereClass const& other)
 {
@@ -54,5 +82,6 @@ float MyBoundingSphereClass::GetRadius(void) { return m_fRadius; }
 //--- Non Standard Singleton Methods
 bool MyBoundingSphereClass::IsColliding(MyBoundingSphereClass* const a_pOther)
 {
-	return false;
+	float dist = glm::distance(GetCenter(), a_pOther->GetCenter());
+	return dist < (GetRadius() + a_pOther->GetRadius());
 }
