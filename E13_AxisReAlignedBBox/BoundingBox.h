@@ -84,6 +84,7 @@ public:
 	float GetRadius(void);
 
 	vector3 GetSize(void);
+	matrix4 GetRot(void);
 
 	/*
 	 IsColliding

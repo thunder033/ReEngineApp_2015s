@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F8318B78-847D-4D6F-B0AA-F3AC80C5FFF0}</ProjectGuid>
+    <ProjectGuid>{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}</ProjectGuid>
     <RootNamespace>E13_AxisReAlignedBBox</RootNamespace>
     <ProjectName>E13_AxisReAlignedBBox</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>

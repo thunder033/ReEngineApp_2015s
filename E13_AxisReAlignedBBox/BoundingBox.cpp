@@ -85,9 +85,14 @@ void BoundingBox::SetModelMatrix(matrix4 a_m4ToWorld){ m_m4ToWorld = a_m4ToWorld
 vector3 BoundingBox::GetCenter(void){ return vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f)); }
 float BoundingBox::GetRadius(void) { return m_fRadius; }
 vector3 BoundingBox::GetSize(void) { return m_fSize; }
+matrix4 BoundingBox::GetRot(void)
+{
+	return IDENTITY_M4;
+}
 //--- Non Standard Singleton Methods
 bool BoundingBox::IsColliding(BoundingBox* const a_pOther)
 {
+	//from Hammer (monogame #c engine)
 	//return (position.X <= collidee.position.X + collidee.bBox.X &&
 	//	collidee.position.X <= position.X + bBox.X &&
 	//	position.Y <= collidee.position.Y + collidee.bBox.Y &&
@@ -99,7 +104,7 @@ bool BoundingBox::IsColliding(BoundingBox* const a_pOther)
 	vector3 v3Max = vector3(m_m4ToWorld * vector4(m_v3Max, 1.0f));
 	vector3 v3MaxO = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->m_v3Max, 1.0f));
 
-	return (v3Min.x < v3MaxO.x && v3MinO.x < v3Max.x &&
-		v3Min.y < v3MaxO.y && v3MinO.y < v3Max.y &&
-		v3Min.z < v3MaxO.z && v3MinO.z < v3Max.z);
+	return !(v3Min.x > v3MaxO.x || v3MinO.x > v3Max.x ||
+		v3Min.y > v3MaxO.y || v3MinO.y > v3Max.y ||
+		v3Min.z > v3MaxO.z || v3MinO.z > v3Max.z);
 }
