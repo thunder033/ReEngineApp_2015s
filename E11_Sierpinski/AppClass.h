@@ -28,8 +28,7 @@ class AppClass : public ReEngAppClass
 {
 private:
 
-	float* m_fMatrixArray;
-	int m_iObjects;
+	int m_iObjects = 0;
 	const int m_iMatrixSize = 16;
 	void AddTransformToRenderList(matrix4 transform);
 
