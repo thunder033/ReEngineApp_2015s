@@ -16,7 +16,9 @@ class BoundingBox
 	vector3 m_v3Center = vector3(0.0f); //Will store the center point of the Sphere Class
 	vector3 m_v3Min = vector3(0.0f); //Will store the minimum vector of the Sphere Class
 	vector3 m_v3Max = vector3(0.0f); //Will store the maximum vector of the Sphere Class
-	vector3 m_fSize = vector3(0.0f);
+	vector3 m_vSize = vector3(0.0f);
+	vector3 m_vAlignedSize = vector3(0.0f);
+	quaternion m_qRotation = quaternion();
 
 	void GetMinMax(vector3& min, vector3& max, std::vector<vector3> points);
 public:
@@ -83,8 +85,12 @@ public:
 	*/
 	float GetRadius(void);
 
+	std::vector<vector3> Rotate(quaternion);
 	vector3 GetSize(void);
 	matrix4 GetRot(void);
+	matrix4 GetAxisAlignedTransform(void);
+	vector3 GetMin();
+	vector3 GetMax();
 
 	/*
 	 IsColliding

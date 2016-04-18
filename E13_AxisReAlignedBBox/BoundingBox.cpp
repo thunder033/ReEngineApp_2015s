@@ -1,4 +1,5 @@
 #include "BoundingBox.h"
+
 //  BoundingBox
 void BoundingBox::Init(void)
 {
@@ -55,9 +56,10 @@ BoundingBox::BoundingBox(std::vector<vector3> a_lVectorList)
 
 	m_fRadius = glm::distance(m_v3Center, m_v3Max);
 
-	m_fSize.x = m_v3Max.x - m_v3Min.x;
-	m_fSize.y = m_v3Max.y - m_v3Min.y;
-	m_fSize.z = m_v3Max.z - m_v3Min.z;
+	m_vSize.x = m_v3Max.x - m_v3Min.x;
+	m_vSize.y = m_v3Max.y - m_v3Min.y;
+	m_vSize.z = m_v3Max.z - m_v3Min.z;
+	m_vAlignedSize = m_vSize;
 }
 BoundingBox::BoundingBox(BoundingBox const& other)
 {
@@ -84,11 +86,58 @@ BoundingBox::~BoundingBox(){Release();};
 void BoundingBox::SetModelMatrix(matrix4 a_m4ToWorld){ m_m4ToWorld = a_m4ToWorld; }
 vector3 BoundingBox::GetCenter(void){ return vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f)); }
 float BoundingBox::GetRadius(void) { return m_fRadius; }
-vector3 BoundingBox::GetSize(void) { return m_fSize; }
+std::vector<vector3> BoundingBox::Rotate(quaternion rot)
+{
+	m_qRotation = rot;
+
+	float fValue = 0.5f;
+	//3--2
+	//|  |
+	//0--1
+	std::vector<vector3> box{
+		vector3(-fValue, -fValue, fValue), //0
+		vector3(fValue, -fValue, fValue), //1
+		vector3(fValue, fValue, fValue), //2
+		vector3(-fValue, fValue, fValue), //3
+
+		vector3(-fValue, -fValue, -fValue), //4
+		vector3(fValue, -fValue, -fValue), //5
+		vector3(fValue, fValue, -fValue), //6
+		vector3(-fValue, fValue, -fValue) //7
+	};
+
+	for (int i = 0; i < 8; i++) {
+		box[i] = vector3(ToMatrix4(m_qRotation) * glm::translate(m_v3Center) * glm::scale(m_vSize) * vector4(box[i], 1));
+	}
+
+	GetMinMax(m_v3Min, m_v3Max, box);
+	m_vAlignedSize.x = m_v3Max.x - m_v3Min.x;
+	m_vAlignedSize.y = m_v3Max.y - m_v3Min.y;
+	m_vAlignedSize.z = m_v3Max.z - m_v3Min.z;
+
+	return box;
+}
+
+matrix4 BoundingBox::GetAxisAlignedTransform()
+{
+	return glm::translate(GetCenter()) * glm::scale(m_vAlignedSize);
+}
+
+vector3 BoundingBox::GetSize(void) { return m_vSize; }
 matrix4 BoundingBox::GetRot(void)
 {
-	return IDENTITY_M4;
+	return ToMatrix4(m_qRotation);
 }
+
+
+vector3 BoundingBox::GetMin() {
+	return vector3(m_m4ToWorld[3] + vector4(m_v3Min, 1.0f));
+}
+
+vector3 BoundingBox::GetMax() {
+	return vector3(m_m4ToWorld[3] + vector4(m_v3Max, 1.0f));
+}
+
 //--- Non Standard Singleton Methods
 bool BoundingBox::IsColliding(BoundingBox* const a_pOther)
 {
@@ -98,11 +147,11 @@ bool BoundingBox::IsColliding(BoundingBox* const a_pOther)
 	//	position.Y <= collidee.position.Y + collidee.bBox.Y &&
 	//	collidee.position.Y <= position.Y + bBox.Y);
 
-	vector3 v3Min = vector3(m_m4ToWorld * vector4(m_v3Min, 1.0f));
-	vector3 v3MinO = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->m_v3Min, 1.0f));
+	vector3 v3Min = GetMin();
+	vector3 v3MinO = a_pOther->GetMin();
 
-	vector3 v3Max = vector3(m_m4ToWorld * vector4(m_v3Max, 1.0f));
-	vector3 v3MaxO = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->m_v3Max, 1.0f));
+	vector3 v3Max = GetMax();
+	vector3 v3MaxO = a_pOther->GetMax();
 
 	return !(v3Min.x > v3MaxO.x || v3MinO.x > v3Max.x ||
 		v3Min.y > v3MaxO.y || v3MinO.y > v3Max.y ||

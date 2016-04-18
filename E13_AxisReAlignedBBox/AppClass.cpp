@@ -43,13 +43,25 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O2), "Creeper");
 
 	m_pColSteve->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
+	std::vector<vector3> box = m_pColSteve->Rotate(m_qArcBall);
 	m_pColCreeper->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
 
 	vector3 color = m_pColSteve->IsColliding(m_pColCreeper) ? RERED : REGREEN;
 
 	m_pMeshMngr->AddCubeToQueue(
-		glm::translate(m_pColSteve->GetCenter())* ToMatrix4(m_qArcBall) * glm::scale(m_pColSteve->GetSize()),
+		glm::translate(m_pColSteve->GetCenter()) * m_pColSteve->GetRot() * glm::scale(m_pColSteve->GetSize()),
 		color, WIRE);
+	m_pMeshMngr->AddCubeToQueue(
+		m_pColSteve->GetAxisAlignedTransform(),
+		color, WIRE);
+	m_pMeshMngr->AddSphereToQueue(glm::translate(m_pColSteve->GetMin()) * glm::scale(vector3(0.15f)), RERED, SOLID);
+	m_pMeshMngr->AddSphereToQueue(glm::translate(m_pColSteve->GetMax()) * glm::scale(vector3(0.15f)), RERED, SOLID);
+
+	for (int i = 0; i < 8; i++)
+	{
+		m_pMeshMngr->AddSphereToQueue(glm::translate(vector3(m_pMeshMngr->GetModelMatrix("Steve")[3] + vector4(box[i], 1.0f))) * glm::scale(vector3(0.05f)), REBLUE, SOLID);
+	}
+
 	m_pMeshMngr->AddCubeToQueue(
 		glm::translate(m_pColCreeper->GetCenter()) * glm::scale(m_pColCreeper->GetSize()),
 		color, WIRE);
