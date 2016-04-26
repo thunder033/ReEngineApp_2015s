@@ -19,8 +19,6 @@ class AppClass : public ReEngAppClass
 	vector3 cameraPos;
 	matrix4 m_m4Projection;
 	matrix4 m_m4View;
-
-	float m_fTemp = 0.0f;
 public:
 	typedef ReEngAppClass super;
 
@@ -71,6 +69,7 @@ public:
 	OUTPUT: ---
 	*/
 	virtual void ReadConfig(void) final {}
+
 	/*
 	USAGE: Writes the configuration of the application to a file
 	ARGUMENTS: ---

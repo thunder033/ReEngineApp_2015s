@@ -4,6 +4,7 @@ void AppClass::InitWindow(String a_sWindowName)
 {
 	//Using Base InitWindow method
 	super::InitWindow("Instance Rendering");
+	m_v4ClearColor = vector4(REBLACK, 1.0f);
 }
 
 void AppClass::AddTransformToRenderList(matrix4 transform)
@@ -102,7 +103,9 @@ void AppClass::Update(void)
 
 void AppClass::Display(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the window
+
+	ClearScreen();
+	
 
 	//Matrices from the camera
 	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
@@ -113,7 +116,12 @@ void AppClass::Display(void)
 
 	m_pMeshMngr->AddSphereToQueue(IDENTITY_M4, RERED, WIRE);
 	m_pMeshMngr->Render();
+
+	m_pMesh->Render(m4Projection, m4View, IDENTITY_M4);//Rendering nObjects
+													   //clear the screen
 	
+	m_pMeshMngr->Render(); //renders the render list
+	m_pMeshMngr->ResetRenderList(); //Reset the Render list after render
 
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
 }
