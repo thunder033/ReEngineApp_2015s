@@ -103,23 +103,15 @@ void AppClass::Update(void)
 
 void AppClass::Display(void)
 {
-
 	ClearScreen();
 	
-
 	//Matrices from the camera
 	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
 	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
 
-	m_pMesh->RenderList(m4Projection, m4View, m_fMatrixArray, 16);
-	//m_pMesh->Render(m4Projection, m4View, IDENTITY_M4);//Rendering nObjects
-
-	m_pMeshMngr->AddSphereToQueue(IDENTITY_M4, RERED, WIRE);
-	m_pMeshMngr->Render();
-
+	//m_pMesh->RenderList(m4Projection, m4View, m_fMatrixArray, 16);
 	m_pMesh->Render(m4Projection, m4View, IDENTITY_M4);//Rendering nObjects
-													   //clear the screen
-	
+
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ResetRenderList(); //Reset the Render list after render
 
