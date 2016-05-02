@@ -1,11 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-<<<<<<< HEAD
 VisualStudioVersion = 14.0.24720.0
-=======
-VisualStudioVersion = 14.0.23107.0
->>>>>>> d61a7252ed9bf8b6ef06a8ddb31bafc9c0ad8667
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelViewer_VS15", "ModelViewer\ModelViewer_VS15.vcxproj", "{FB51C0AB-6E10-4DEB-9D27-A3C31251A36D}"
 EndProject
@@ -79,6 +75,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "T01A_Exam_Solution", "T01-A
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E13_AxisReAlignedBBox", "E13_AxisReAlignedBBox\E13_AxisReAlignedBBox.vcxproj", "{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KD_Trees", "KD-Trees\KD_Trees.vcxproj", "{EB15CF93-7075-4E20-A099-701D8FB134A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -149,12 +147,6 @@ Global
 		{F8318B78-847D-4D6F-B0AA-F3AC80C5FFF0}.Debug|x86.Build.0 = Debug|Win32
 		{F8318B78-847D-4D6F-B0AA-F3AC80C5FFF0}.Release|x86.ActiveCfg = Release|Win32
 		{F8318B78-847D-4D6F-B0AA-F3AC80C5FFF0}.Release|x86.Build.0 = Release|Win32
-<<<<<<< HEAD
-		{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}.Debug|x86.ActiveCfg = Debug|Win32
-		{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}.Debug|x86.Build.0 = Debug|Win32
-		{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}.Release|x86.ActiveCfg = Release|Win32
-		{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}.Release|x86.Build.0 = Release|Win32
-=======
 		{05BD95CA-C5F7-45E3-A252-EF522EAAA809}.Debug|x86.ActiveCfg = Debug|Win32
 		{05BD95CA-C5F7-45E3-A252-EF522EAAA809}.Debug|x86.Build.0 = Debug|Win32
 		{05BD95CA-C5F7-45E3-A252-EF522EAAA809}.Release|x86.ActiveCfg = Release|Win32
@@ -231,7 +223,14 @@ Global
 		{AA18B089-83AC-4904-8600-CD68E61EDC26}.Debug|x86.Build.0 = Debug|Win32
 		{AA18B089-83AC-4904-8600-CD68E61EDC26}.Release|x86.ActiveCfg = Release|Win32
 		{AA18B089-83AC-4904-8600-CD68E61EDC26}.Release|x86.Build.0 = Release|Win32
->>>>>>> d61a7252ed9bf8b6ef06a8ddb31bafc9c0ad8667
+		{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}.Debug|x86.ActiveCfg = Debug|Win32
+		{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}.Debug|x86.Build.0 = Debug|Win32
+		{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}.Release|x86.ActiveCfg = Release|Win32
+		{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}.Release|x86.Build.0 = Release|Win32
+		{EB15CF93-7075-4E20-A099-701D8FB134A2}.Debug|x86.ActiveCfg = Debug|Win32
+		{EB15CF93-7075-4E20-A099-701D8FB134A2}.Debug|x86.Build.0 = Debug|Win32
+		{EB15CF93-7075-4E20-A099-701D8FB134A2}.Release|x86.ActiveCfg = Release|Win32
+		{EB15CF93-7075-4E20-A099-701D8FB134A2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
