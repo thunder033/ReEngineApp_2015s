@@ -7,13 +7,15 @@ Date: 2015/09
 
 #include "RE\ReEngAppClass.h"
 #include <SFML\Graphics.hpp>
+#include "kDTree.h"
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
-	int pointCount = 15;
+	int pointCount = 5;
 	std::vector<vector3> points;
+	kDTree* tree;
 
 	vector3 minBounds;
 	vector3 maxBounds;

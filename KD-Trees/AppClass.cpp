@@ -7,6 +7,7 @@ void AppClass::InitWindow(String a_sWindowName)
 
 void AppClass::InitVariables(void)
 {
+	pointCount = 20;
 	minBounds = vector3(-5);
 	maxBounds = vector3(5);
 
@@ -18,6 +19,8 @@ void AppClass::InitVariables(void)
 
 		points.push_back(vector3(x, y, z));
 	}
+
+	tree = new kDTree(5, points);
 }
 
 void AppClass::Update(void)
@@ -49,8 +52,6 @@ void AppClass::Update(void)
 #pragma endregion
 
 #pragma region Print info
-	printf("Earth Day: %.3f, Moon Day: %.3f\r", m_fTimeElapsed, m_fFrames);//print the Frames per Second
-	
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
 	//Print info on the screen
@@ -69,16 +70,17 @@ void AppClass::Display(void)
 	//clear the screen
 	ClearScreen();
 
-	for (size_t i = 0; i < pointCount; i++)
-	{
+	for (size_t i = 0; i < pointCount; i++) {
 		m_pMeshMngr->AddSphereToRenderList(glm::translate(points[i]) * glm::scale(vector3(0.1f)), REYELLOW, SOLID);
 	}
 
 	vector3 genBounds = maxBounds - minBounds;
 	m_pMeshMngr->AddCubeToRenderList(glm::scale(genBounds), REWHITE, WIRE);
+
+	tree->Draw(minBounds, maxBounds);
 	
 	//Render the grid based on the camera's mode:
-	m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
+	//m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ResetRenderList(); //Reset the Render list after render
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
