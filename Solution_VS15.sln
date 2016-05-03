@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelViewer_VS15", "ModelViewer\ModelViewer_VS15.vcxproj", "{FB51C0AB-6E10-4DEB-9D27-A3C31251A36D}"
 EndProject
@@ -17,7 +17,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_Basics", "01_Basics\01_B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_Inheriting", "02_Inheriting\02_Inheriting.vcxproj", "{F1EDF2C3-8663-42FF-89D7-D0C4857D4358}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03_SFML_Input", "03_SFML_Input\03_SFML_Input.vcxproj", "{1EA67B6E-CAF1-4F2A-8FB5-99B5D30E3004}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03_Input", "03_SFML_Input\03_SFML_Input.vcxproj", "{1EA67B6E-CAF1-4F2A-8FB5-99B5D30E3004}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04_MeshRendering", "04_MeshRendering\04_MeshRendering.vcxproj", "{D04CA8CD-8C31-4F09-A363-33BFC486C26F}"
 EndProject
@@ -76,6 +76,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E13_AxisReAlignedBBox", "E13_AxisReAlignedBBox\E13_AxisReAlignedBBox.vcxproj", "{DE6D6B2B-3EAF-4BA4-9408-E526CAFF17AF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KD_Trees", "KD-Trees\KD_Trees.vcxproj", "{EB15CF93-7075-4E20-A099-701D8FB134A2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "08_Audio", "08_Audio\08_Audio.vcxproj", "{D50EA787-1AD4-44AC-A230-3304FFB04F82}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E15_MyEntityManager", "E15_MyEntityManager\E15_MyEntityManager.vcxproj", "{0C037D84-CF9B-4149-AAAB-8317346179DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -231,6 +235,14 @@ Global
 		{EB15CF93-7075-4E20-A099-701D8FB134A2}.Debug|x86.Build.0 = Debug|Win32
 		{EB15CF93-7075-4E20-A099-701D8FB134A2}.Release|x86.ActiveCfg = Release|Win32
 		{EB15CF93-7075-4E20-A099-701D8FB134A2}.Release|x86.Build.0 = Release|Win32
+		{D50EA787-1AD4-44AC-A230-3304FFB04F82}.Debug|x86.ActiveCfg = Debug|Win32
+		{D50EA787-1AD4-44AC-A230-3304FFB04F82}.Debug|x86.Build.0 = Debug|Win32
+		{D50EA787-1AD4-44AC-A230-3304FFB04F82}.Release|x86.ActiveCfg = Release|Win32
+		{D50EA787-1AD4-44AC-A230-3304FFB04F82}.Release|x86.Build.0 = Release|Win32
+		{0C037D84-CF9B-4149-AAAB-8317346179DF}.Debug|x86.ActiveCfg = Debug|Win32
+		{0C037D84-CF9B-4149-AAAB-8317346179DF}.Debug|x86.Build.0 = Debug|Win32
+		{0C037D84-CF9B-4149-AAAB-8317346179DF}.Release|x86.ActiveCfg = Release|Win32
+		{0C037D84-CF9B-4149-AAAB-8317346179DF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
