@@ -6,15 +6,21 @@ Date: 2015/06
 #define __MyOctant_H_
 
 #include "RE\ReEng.h"
+#include "MyBOManager.h"
 
 //System Class
 class MyOctant
 {
+	int m_nChildCount = 0;
 	vector3 m_v3Position;
-	float m_fSize;
+	float m_fSize = 0.0f;
 	MeshManagerSingleton* m_pMeshMngr = nullptr;
+	MyBOManager* m_pBOMngr = nullptr;
+
+	
 	
 public:
+	static bool m_bHead;
 	MyOctant* m_pChildren = nullptr;
 	/*
 	Method: MyOctant
