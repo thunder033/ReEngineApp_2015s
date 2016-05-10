@@ -87,7 +87,7 @@ void Node::Draw(vector3 min, vector3 max)
 	case DZ:
 		pos.z = median;
 		size.z = 0;
-		color = REBLUE;
+		color = vector3(0, 0.5f, 1.0f);
 		break;
 	}
 

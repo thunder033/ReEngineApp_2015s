@@ -24,13 +24,8 @@ void kDTree::NearestNeighbor(vector3 point, Node * node, vector3& nearest, float
 	}
 }
 
-kDTree::kDTree(int depth, std::vector<vector3> points) {
-	this->depth = depth;
+kDTree::kDTree(std::vector<vector3> points) {
 	root = new Node(DX, 0, points);
-}
-
-int kDTree::GetDepth() {
-	return depth;
 }
 
 void kDTree::Draw(vector3 min, vector3 max)

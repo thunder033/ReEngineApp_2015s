@@ -1,7 +1,7 @@
 #include "AppClass.h"
 void AppClass::InitWindow(String a_sWindowName)
 {
-	super::InitWindow("3D Transformations");
+	super::InitWindow("kD Trees");
 	m_v4ClearColor = vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
@@ -11,6 +11,7 @@ void AppClass::InitVariables(void)
 	minBounds = vector3(-5);
 	maxBounds = vector3(5);
 
+	srand(time(NULL));
 	for (size_t i = 0; i < pointCount; i++)
 	{
 		float x = minBounds.x + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (maxBounds.x - minBounds.x)));
@@ -20,7 +21,7 @@ void AppClass::InitVariables(void)
 		points.push_back(vector3(x, y, z));
 	}
 
-	tree = new kDTree(5, points);
+	tree = new kDTree(points);
 }
 
 void AppClass::Update(void)
