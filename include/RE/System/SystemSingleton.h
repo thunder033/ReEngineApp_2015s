@@ -6,6 +6,7 @@ Date: 2015/06
 #define __SystemSingleton_H_
 
 #include "RE\System\FolderSingleton.h"
+#include <random>
 
 namespace ReEng
 {
@@ -288,6 +289,14 @@ public:
 
 	FolderSingleton* m_pFolder;
 	REOptions m_RenderingContext;
+	/*
+	USAGE: Will generate random numbers limited to the cap (inclusive)
+	ARGUMENTS:
+	uint a_uMin -> lower cap (exclusive)
+	uint a_uMax -> upper cap (exclusive)
+	OUTPUT: random number between 0 and a_uMax
+	*/
+	double GenerateRandom(double a_uMin, double a_uMax);
 
 private:
 	/*

@@ -209,7 +209,7 @@ public:
 	ARGUMENTS: GLuint a_uGLIndex index of the texture in opengl (not in the texture manager)
 	OUTPUT: ---
 	*/
-	void RenderTexture(GLuint a_uGLIndex);
+	void RenderTexture(GLuint a_uGLIndex, vector3 a_v3Tint = vector3(1.0f));
 	/*
 	USAGE: Renders the Grid based on the active's camera mode
 	ARGUMENTS:
@@ -365,7 +365,7 @@ public:
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
-	void ResetRenderList(void);
+	void ClearRenderList(void);
 	/*
 	USAGE: Saves the specified model file, needs to specify the file extension (ATO or BTO)
 	ARGUMENTS:

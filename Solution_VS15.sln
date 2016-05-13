@@ -79,6 +79,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E15_MyEntityManager", "E15_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OctreeStart", "OctreeStart\OctreeStart.vcxproj", "{C39927BA-EB62-467C-96FA-6DE4B323CE92}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ex02_A", "Ex02_A\Ex02_A.vcxproj", "{EF217464-AA2F-4BC7-B108-012FA5DC607D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ex02_B", "Ex02_B\Ex02_B.vcxproj", "{FC6D1FBF-64EE-43AA-BBE4-C397FB64B8A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -237,6 +241,14 @@ Global
 		{C39927BA-EB62-467C-96FA-6DE4B323CE92}.Debug|x86.Build.0 = Debug|Win32
 		{C39927BA-EB62-467C-96FA-6DE4B323CE92}.Release|x86.ActiveCfg = Release|Win32
 		{C39927BA-EB62-467C-96FA-6DE4B323CE92}.Release|x86.Build.0 = Release|Win32
+		{EF217464-AA2F-4BC7-B108-012FA5DC607D}.Debug|x86.ActiveCfg = Debug|Win32
+		{EF217464-AA2F-4BC7-B108-012FA5DC607D}.Debug|x86.Build.0 = Debug|Win32
+		{EF217464-AA2F-4BC7-B108-012FA5DC607D}.Release|x86.ActiveCfg = Release|Win32
+		{EF217464-AA2F-4BC7-B108-012FA5DC607D}.Release|x86.Build.0 = Release|Win32
+		{FC6D1FBF-64EE-43AA-BBE4-C397FB64B8A7}.Debug|x86.ActiveCfg = Debug|Win32
+		{FC6D1FBF-64EE-43AA-BBE4-C397FB64B8A7}.Debug|x86.Build.0 = Debug|Win32
+		{FC6D1FBF-64EE-43AA-BBE4-C397FB64B8A7}.Release|x86.ActiveCfg = Release|Win32
+		{FC6D1FBF-64EE-43AA-BBE4-C397FB64B8A7}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
