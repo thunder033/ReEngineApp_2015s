@@ -79,7 +79,7 @@ void AppClass::Update(void)
 		CameraRotation();
 
 	//Generate a clock
-	static uint nClock = m_pSystem->AddClock();
+	static uint nClock = m_pSystem->GenClock();
 	//Create a count for time differences
 	static double dDeltaTime = 0.0f;
 	dDeltaTime = m_pSystem->LapClock(nClock);
