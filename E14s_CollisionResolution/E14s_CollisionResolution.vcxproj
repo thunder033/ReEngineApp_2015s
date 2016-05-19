@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{AA18B089-83AC-4904-8600-CD68E61EDC26}</ProjectGuid>
-    <RootNamespace>T01A_Exam_Solution</RootNamespace>
-    <ProjectName>Ex01s_A_DEMO</ProjectName>
+    <ProjectGuid>{FBDB5977-062C-47D5-A1DA-9B61A12DD98A}</ProjectGuid>
+    <RootNamespace>E14s_CollisionResolution</RootNamespace>
+    <ProjectName>E14s_CollisionResolution_DEMO</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -108,10 +108,14 @@ xcopy "$(SolutionDir)include\RE\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
     <ClCompile Include="AppClass.cpp" />
     <ClCompile Include="AppClassControls.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MyBoundingBoxClass.cpp" />
+    <ClCompile Include="MyEntityClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\res\Resource.h" />
     <ClInclude Include="AppClass.h" />
+    <ClInclude Include="MyBoundingBoxClass.h" />
+    <ClInclude Include="MyEntityClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\res\BTO.rc" />
